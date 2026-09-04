@@ -1,0 +1,911 @@
+<meta charset="utf-8">
+<title>MTF Jubileumsalbum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Signika:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* ── Tokens — fra brand/mtf-brand.css og mtf-tidslinje.html ─────────── */
+:root{
+  --blue:#004d9d; --blue-deep:#003a78; --calico:#4d63ab; --palm:#afa852;
+  --red:#ff0000;
+
+  --ground:#f4f6f9;
+  --surface:#ffffff;
+  --ink:#1d252b;
+  --muted:#5b6671;
+  --faint:#67727c;
+  --line:#d5dce4;
+  --scrim:rgba(16,22,28,.93);
+
+  --era1:var(--blue-deep); --era2:var(--blue);
+  --era3:var(--calico);    --era4:var(--palm);
+  --era1-ink:#ffffff; --era2-ink:#ffffff;
+  --era3-ink:#ffffff; --era4-ink:#1d252b;
+
+  --font-head:'Signika','Segoe UI',Arial,Helvetica,sans-serif;
+  --font-body:'Lora',Georgia,'Times New Roman',serif;
+
+  --rail:9.5rem;
+  --maxw:62rem;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#12171c; --surface:#1a222a;
+    --ink:#e6ecf2; --muted:#9aa6b2; --faint:#828d98; --line:#2b353f;
+    --blue:#6fa8e0; --blue-deep:#3d7fc4; --calico:#8b9bd6; --palm:#c9c273;
+    --red:#ff6b60;
+    --scrim:rgba(5,8,11,.95);
+    --era1:#0a2c52; --era2:#0d3d70; --era3:#33427a; --era4:#8f8942;
+    --era1-ink:#e6ecf2; --era2-ink:#e6ecf2;
+    --era3-ink:#e6ecf2; --era4-ink:#12171c;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#12171c; --surface:#1a222a;
+  --ink:#e6ecf2; --muted:#9aa6b2; --faint:#828d98; --line:#2b353f;
+  --blue:#6fa8e0; --blue-deep:#3d7fc4; --calico:#8b9bd6; --palm:#c9c273;
+  --red:#ff6b60;
+  --scrim:rgba(5,8,11,.95);
+  --era1:#0a2c52; --era2:#0d3d70; --era3:#33427a; --era4:#8f8942;
+  --era1-ink:#e6ecf2; --era2-ink:#e6ecf2;
+  --era3-ink:#e6ecf2; --era4-ink:#12171c;
+}
+
+/* ── Basis ───────────────────────────────────────────────────────────── */
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--font-body); font-size:17px; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 1.5rem 6rem}
+img{max-width:100%}
+
+/* ── Topp ────────────────────────────────────────────────────────────── */
+.masthead{padding:4.5rem 0 0}
+.kicker{
+  font-family:var(--font-head); font-size:.75rem; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--blue);
+  margin:0 0 1.1rem;
+}
+h1{
+  font-family:var(--font-head); font-weight:600; font-size:clamp(2.1rem,5.2vw,3.4rem);
+  line-height:1.08; letter-spacing:-.015em; margin:0; text-wrap:balance;
+}
+h1 .yrs{font-variant-numeric:tabular-nums; color:var(--muted); font-weight:400; display:block; font-size:.46em; letter-spacing:.02em; margin-top:.7rem}
+.standfirst{max-width:46ch; margin:1.6rem 0 0; color:var(--muted); font-size:1.06rem}
+.sourceline{
+  margin:2.2rem 0 0; padding-top:1.2rem; border-top:1px solid var(--line);
+  font-family:var(--font-head); font-size:.82rem; color:var(--faint); line-height:1.55;
+}
+
+/* ── Navigasjon ──────────────────────────────────────────────────────── */
+.eranav{display:flex; flex-wrap:wrap; gap:.5rem; margin:2rem 0 0; padding:0; list-style:none}
+.eranav a{
+  display:inline-flex; align-items:baseline; gap:.55rem;
+  font-family:var(--font-head); font-size:.8rem; font-weight:500;
+  text-decoration:none; color:var(--ink);
+  border:1px solid var(--line); background:var(--surface);
+  padding:.42rem .8rem; border-radius:2px;
+}
+.eranav a:hover{border-color:var(--blue); color:var(--blue)}
+.eranav a:focus-visible{outline:2px solid var(--blue); outline-offset:2px}
+.eranav .n{font-variant-numeric:tabular-nums; color:var(--faint); font-size:.9em}
+.eranav .sw{width:.55rem; height:.55rem; border-radius:50%; align-self:center}
+.eranav a.to-album{border-color:var(--blue); color:var(--blue); font-weight:600}
+
+/* ── Tidslinje ───────────────────────────────────────────────────────── */
+.tl{position:relative; margin-top:3.5rem}
+.tl::before{
+  content:""; position:absolute; left:var(--rail); top:0; bottom:0;
+  width:2px; margin-left:-1px;
+  background:linear-gradient(to bottom,
+    var(--era1) 0%, var(--era2) 30%, var(--era3) 58%, var(--era4) 92%);
+}
+.era{
+  position:relative; z-index:1; border-radius:2px;
+  margin:3.6rem 0 .6rem;
+  padding:1.35rem 1.6rem 1.5rem calc(var(--rail) + 2.75rem);
+}
+.era:first-child{margin-top:0}
+.era h2{
+  font-family:var(--font-head); font-weight:600; font-size:1.42rem;
+  line-height:1.2; margin:0; letter-spacing:-.01em;
+}
+.era .span{
+  font-family:var(--font-head); font-size:.76rem; font-weight:600;
+  letter-spacing:.15em; text-transform:uppercase; opacity:.72;
+  display:block; margin-bottom:.5rem; font-variant-numeric:tabular-nums;
+}
+.era p{margin:.7rem 0 0; font-size:.99rem; max-width:54ch; opacity:.92}
+.era--1{background:var(--era1); color:var(--era1-ink)}
+.era--2{background:var(--era2); color:var(--era2-ink)}
+.era--3{background:var(--era3); color:var(--era3-ink)}
+.era--4{background:var(--era4); color:var(--era4-ink)}
+
+.ev{
+  position:relative; display:grid;
+  grid-template-columns:var(--rail) 1fr; column-gap:2.75rem;
+  padding:1.5rem 0;
+}
+.ev::before{
+  content:""; position:absolute; left:var(--rail); top:1.95rem;
+  width:11px; height:11px; margin-left:-5.5px; border-radius:50%;
+  background:var(--ground); border:2px solid var(--dot,var(--blue));
+}
+.ev__year{
+  text-align:right; padding-right:1.9rem;
+  font-family:var(--font-head); font-variant-numeric:tabular-nums;
+  font-weight:600; font-size:1.28rem; line-height:1.45; color:var(--ink);
+  letter-spacing:-.01em;
+}
+.ev__date{
+  display:block; font-size:.74rem; font-weight:400; letter-spacing:.06em;
+  color:var(--faint); margin-top:.1rem; text-transform:uppercase;
+}
+.ev__body{max-width:62ch}
+.ev__head{
+  font-family:var(--font-body); font-weight:600; font-size:1.06rem;
+  line-height:1.4; margin:0 0 .5rem; color:var(--ink);
+}
+.ev__head cite{font-style:italic; font-weight:400}
+.ev p{margin:0 0 .6rem}
+.ev p:last-child{margin-bottom:0}
+.ev__who{
+  font-family:var(--font-head); font-size:.85rem; line-height:1.6;
+  color:var(--muted); margin-top:.65rem;
+}
+.ev__who b{color:var(--ink); font-weight:600}
+.ev__src{
+  font-family:var(--font-head); font-size:.74rem; letter-spacing:.04em;
+  color:var(--faint); margin-top:.75rem;
+}
+.ev__src .indirect{
+  color:var(--muted); border:1px solid var(--line);
+  padding:.1rem .38rem; border-radius:2px; margin-left:.5rem; font-size:.94em;
+}
+.num{font-variant-numeric:tabular-nums}
+
+.ev--mark{--dot:var(--red)}
+.ev--mark::before{width:15px; height:15px; margin-left:-7.5px; top:1.8rem; border-width:3px}
+.ev--mark .ev__year{color:var(--red); font-size:1.5rem}
+.ev--mark .ev__head{font-family:var(--font-head); font-size:1.24rem; font-weight:600; letter-spacing:-.01em}
+.ev--mark .ev__body{
+  border-left:2px solid var(--red); padding-left:1.4rem; margin-left:-1.4rem;
+}
+
+.gap{
+  display:grid; grid-template-columns:var(--rail) 1fr; column-gap:2.75rem;
+  padding:1.1rem 0; position:relative;
+}
+.gap::before{
+  content:""; position:absolute; left:var(--rail); top:0; bottom:0; width:6px;
+  margin-left:-3px; background:var(--ground);
+  border-left:2px dotted var(--faint); border-right:0;
+}
+.gap span{
+  grid-column:2; font-family:var(--font-head); font-size:.8rem;
+  color:var(--faint); font-style:normal; letter-spacing:.03em;
+}
+
+/* ── Utklipp i tidslinjen ────────────────────────────────────────────── */
+.clips{display:flex; flex-wrap:wrap; gap:.6rem; margin-top:.9rem}
+.clips button{
+  display:block; padding:0; border:1px solid var(--line); border-radius:2px;
+  background:var(--surface); cursor:zoom-in; line-height:0;
+  box-shadow:0 1px 3px rgba(0,0,0,.09);
+}
+.clips button:hover{border-color:var(--blue)}
+.clips button:focus-visible{outline:2px solid var(--blue); outline-offset:2px}
+.clips img{height:6.2rem; width:auto; display:block; border-radius:1px}
+.clips figcaption{display:none}
+.cliphint{
+  font-family:var(--font-head); font-size:.72rem; color:var(--faint);
+  letter-spacing:.05em; margin-top:.45rem;
+}
+
+/* ── Fotoalbum ───────────────────────────────────────────────────────── */
+.album{margin-top:4.5rem}
+.album__head{
+  border-top:2px solid var(--blue); padding-top:1.4rem;
+}
+.album__head .span{
+  font-family:var(--font-head); font-size:.76rem; font-weight:600;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--blue);
+  display:block; margin-bottom:.4rem;
+}
+.album__head h2{
+  font-family:var(--font-head); font-weight:600; font-size:1.6rem;
+  margin:0; letter-spacing:-.01em;
+}
+.album__head p{color:var(--muted); font-size:.99rem; max-width:54ch; margin:.7rem 0 0}
+.grid{
+  display:grid; gap:.7rem; margin-top:1.6rem;
+  grid-template-columns:repeat(auto-fill, minmax(9.5rem, 1fr));
+}
+@media (min-width:720px){ .grid{grid-template-columns:repeat(auto-fill, minmax(12rem, 1fr)); gap:.9rem} }
+.grid button{
+  position:relative; display:block; width:100%; aspect-ratio:4/3; padding:0;
+  border:1px solid var(--line); border-radius:2px; overflow:hidden;
+  background:var(--surface); cursor:zoom-in;
+}
+.grid button:hover img{transform:scale(1.04)}
+.grid button:focus-visible{outline:2px solid var(--blue); outline-offset:2px}
+.grid img{
+  width:100%; height:100%; object-fit:cover; display:block;
+  transition:transform .35s ease;
+}
+@media (prefers-reduced-motion:reduce){ .grid img{transition:none} .grid button:hover img{transform:none} }
+
+/* ── Lysbilde (lightbox) ─────────────────────────────────────────────── */
+.lb{
+  position:fixed; inset:0; z-index:50; background:var(--scrim);
+  display:flex; flex-direction:column; touch-action:pan-y;
+}
+.lb[hidden]{display:none}
+.lb__stage{
+  flex:1; display:flex; align-items:center; justify-content:center;
+  min-height:0; padding:.75rem;
+}
+.lb__stage img{
+  max-width:100%; max-height:100%; object-fit:contain;
+  border-radius:2px; box-shadow:0 8px 40px rgba(0,0,0,.5);
+  background:#fff;
+}
+.lb__bar{
+  display:flex; align-items:center; gap:1rem; flex-shrink:0;
+  padding:.65rem 1rem calc(.65rem + env(safe-area-inset-bottom));
+  color:#e8edf3; font-family:var(--font-head);
+}
+.lb__cap{flex:1; min-width:0; font-size:.86rem; line-height:1.45}
+.lb__cap b{display:block; font-weight:600}
+.lb__cap span{color:#a7b2bd; font-size:.92em}
+.lb__count{font-variant-numeric:tabular-nums; font-size:.8rem; color:#a7b2bd; white-space:nowrap}
+.lb button{
+  flex-shrink:0; width:2.6rem; height:2.6rem; border-radius:50%;
+  border:1px solid rgba(255,255,255,.28); background:rgba(255,255,255,.08);
+  color:#fff; font-size:1.25rem; line-height:1; cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center;
+}
+.lb button:hover{background:rgba(255,255,255,.2)}
+.lb button:focus-visible{outline:2px solid #fff; outline-offset:2px}
+.lb__close{position:absolute; top:calc(.7rem + env(safe-area-inset-top)); right:.8rem}
+body.lb-open{overflow:hidden}
+
+/* ── Bunn ────────────────────────────────────────────────────────────── */
+.foot{
+  margin-top:4rem; padding-top:1.6rem; border-top:1px solid var(--line);
+  font-family:var(--font-head); font-size:.82rem; color:var(--faint);
+  line-height:1.65; max-width:58ch;
+}
+
+/* ── Smalt format ────────────────────────────────────────────────────── */
+@media (max-width:720px){
+  body{font-size:16px}
+  .masthead{padding-top:3rem}
+  .tl{--rail:0px}
+  .tl::before{left:3px}
+  .ev, .gap{grid-template-columns:1fr; column-gap:0; padding-left:1.9rem}
+  .ev::before{left:3px; top:1.75rem}
+  .gap::before{left:3px}
+  .gap span{grid-column:1}
+  .ev__year{text-align:left; padding-right:0; margin-bottom:.35rem}
+  .ev__date{display:inline; margin-left:.7rem; text-transform:uppercase}
+  .era{padding-left:1.4rem; padding-right:1.2rem; margin-left:0}
+  .ev--mark .ev__body{margin-left:0; padding-left:1.1rem}
+  .clips img{height:5.2rem}
+}
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="kicker">Moss Transportforum · Jubileum 2026</p>
+    <h1>Fra transporthistorie til fremtidens logistikk
+      <span class="yrs num">Tidslinje og album 1939–2026</span></h1>
+    <p class="standfirst">Digital utgave av tidslinjen i jubileumsmagasinet — her med alle
+      avisutklippene i lesbar størrelse og et fotoalbum fra arkivet.
+      Trykk på et utklipp eller bilde for å se det stort.</p>
+    <p class="sourceline">
+      Kilder: Moss Avis, Moss Dagblad og Sarpsborg Arbeiderblad, 1940–2007, via Nasjonalbiblioteket.
+      Kursiv angir ordrett sitert avisoverskrift.
+    </p>
+
+    <ul class="eranav">
+      <li><a href="#epoke1"><span class="sw" style="background:var(--era1)"></span><span class="n num">1939–1955</span> Kampen om bevillingene</a></li>
+      <li><a href="#epoke2"><span class="sw" style="background:var(--era2)"></span><span class="n num">1955–1979</span> Fra forening til forretning</a></li>
+      <li><a href="#epoke3"><span class="sw" style="background:var(--era3)"></span><span class="n num">1986–1992</span> Moss Transportforum blir til</a></li>
+      <li><a href="#epoke4"><span class="sw" style="background:var(--era4)"></span><span class="n num">1993–2026</span> Ny giv og elektrifisering</a></li>
+      <li><a class="to-album" href="#album">Fotoalbum ↓</a></li>
+    </ul>
+  </header>
+
+  <main class="tl">
+
+    <!-- ══ EPOKE 1 ═══════════════════════════════════════════════════ -->
+    <section class="era era--1" id="epoke1">
+      <span class="span">Epoke 1 · 1939–1955</span>
+      <h2>Kampen om bevillingene</h2>
+      <p>Foreningen stiftes for å få kontroll på hvem som får kjøre lastebil i Moss.
+        Sytten år med strid om antall biler, om monopol mot fritt næringsliv — og en
+        organisasjonskamp som endte i landsomfattende streik.</p>
+    </section>
+
+    <article class="ev" style="--dot:var(--era1)">
+      <div class="ev__year num">1939<span class="ev__date">Mai</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head">Moss Vognmannsforening stiftes</h3>
+        <p>«Det var behovet for bedre kontroll med lastebilkjøringen i distriktet som var
+          bakgrunnen for stiftelsen av foreningen.» Året er bekreftet to ganger uavhengig:
+          foreningen feiret 15-årsjubileum 15. mai 1954 og 40-årsjubileum i mai 1979.</p>
+        <p class="ev__who"><b>Første styre:</b> Hans Ødegård (formann), Gunnar Been (sekretær),
+          Arne Nilsen (kasserer), Martin Svartberg og Ludvik Andresen (styremedlemmer).
+          Med fra starten: Einar Aas, Karl Paulsen, Jens Navestad, Aage Karlsen, David Halvorsen.</p>
+        <p class="ev__src">Rekonstruert fra Moss Avis 7.5.1979<span class="indirect">indirekte kilde</span></p>
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era1)">
+      <div class="ev__year num">1940<span class="ev__date">24. februar</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head">Det eldste sporet</h3>
+        <p>En kunngjøring på fire linjer: «Moss Vognmannsforening avholder generalforsamling i
+          Håndverkerens Hus tirsdag 27de februar kl. 7.30.» Beskjeden, men det er herfra
+          den dokumenterte historien begynner.</p>
+        <p class="ev__src">Moss Avis, 24.2.1940</p>
+        {{CLIPS:utklipp-19400224-moss-avis-annonse-forste-treff}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era1)">
+      <div class="ev__year num">1940<span class="ev__date">31. august</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head"><cite>«Ordet er fritt»</cite> — seks spørsmål til komitéen</h3>
+        <p>Formann H. Ødegaard går i strupen på planene om en bilgodssentral med seks skarpe
+          spørsmål: Kan en godssentral startes uten vogner? Hvem betaler for lokale, telefon og
+          administrasjon? Hva er meningen med samarbeid med andre byer når kjøring dit er forbudt?
+          Hans egen konklusjon: det Moss trenger er en pakkesentral med visergutkontor, ikke dette.</p>
+        <p class="ev__src">Moss Avis, 31.8.1940 · under okkupasjonen, med bensinrasjonering som bakteppe</p>
+        {{CLIPS:utklipp-19400831-moss-avis-ordet-er-fritt-310840}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era1)">
+      <div class="ev__year num">1946<span class="ev__date">29. juni</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head"><cite>«Transportformidlingen i Moss skal overtas av lastebileierne»</cite></h3>
+        <p>Vendepunktet. Departementet krever bevilling for all ervervsmessig lastebiltransport, og
+          den offentlige formidlingssentralen skal gå over til å bli lastebileiernes eget kontor,
+          drevet av yrkesutøverne selv. Moss Avis slår fast at det er Moss Vognmannsforening som
+          «har utført det grunnleggende arbeide» for å få bevillingsordningen gjennom.</p>
+        <p class="ev__who">96 eiere med 167 vogner hadde søkt — «vesentlig for høyt for behovet».
+          Man ventet å lande på rundt 100. Intervjuet: sekretær <b>Gunnar Been</b>.</p>
+        <p class="ev__src">Moss Avis, 29.6.1946</p>
+        {{CLIPS:utklipp-19460629-moss-avis-290646-overtar-transportformidlingen-i-moss}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era1)">
+      <div class="ev__year num">1946<span class="ev__date">22. juli</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head"><cite>«Lastebilmonopolet i Moss»</cite></h3>
+        <p>Tallstriden settes på spissen. Vognmannsforeningen mener 85 lastebiler holder;
+          Moss Kjøre- og Sjåførforening mener 120, minimum 105. Departementet foreslår 105.</p>
+        <p>Foreningens linje er prinsipiell: «Vi er motstandere av statens inngripen og regulering…
+          Vi hyller det frie og sunne konkurranse på dette som på andre felter av næringslivet.»</p>
+        <p class="ev__src">Moss Avis, 22.7.1946</p>
+        {{CLIPS:utklipp-19460722-moss-avis-220746-lastebilmonopolet-i-moss}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era1)">
+      <div class="ev__year num">1946<span class="ev__date">15. november</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head"><cite>«Forsøk på tvang»</cite></h3>
+        <p>Organisasjonsstriden på sitt skarpeste. Moss Kjøre- og Sjåførforening, tilsluttet LO,
+          skriver til de rundt fjorten en-bileierne i Vognmannsforeningen og ber dem melde overgang.
+          Avisa reagerer hardt: «Det er blitt antydet at de skal miste sitt arbeide dersom de ikke
+          melder seg inn.» Karakteristikken er «grovt brudd på demokratisk grunnsyn».</p>
+        <p class="ev__src">Moss Avis, 15.11.1946</p>
+        {{CLIPS:utklipp-19461115-moss-avis-151146-ynkgelig-dokument}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era1)">
+      <div class="ev__year num">1946<span class="ev__date">30. november</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head"><cite>«Lastebilstreiken i Moss»</cite></h3>
+        <p>Landsomfattende protest, iverksatt klokka 13. Rundt 100 lastebiler tas ut av kjøring i
+          Moss og distriktet — Råde, Rygge, Hobøl — derav 65 i Moss, av totalt 133 registrerte.</p>
+        <p>Detaljen som forteller alt om tida: undertittelen slår fast at
+          «Vognmannsforeningens medlemmer kjører heller ikke med hest». De satte inn bilene
+          <em>og</em> lot hestene stå. Total transportstans.</p>
+        <p class="ev__src">Moss Avis, 30.11.1946</p>
+        {{CLIPS:utklipp-19461130-moss-avis-301146-streik-ogsa-hestekjoring}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era1)">
+      <div class="ev__year num">1946<span class="ev__date">5. desember</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head">Sentralen får sitt styre — uten at foreningen møter</h3>
+        <p>Fellesmøte i Torvkafeen, 55 frammøtte og 45 stemmeberettigede. Valgt til styre for
+          overtakelsen: David Arnesen, Ivar Larsen og Th. Arnesen — og fra Vognmannsforeningen
+          Jørgen Syverød og Hans Bredesen.</p>
+        <p>Pikanteriet: Vognmannsforeningen boikottet møtet, men fikk likevel sine folk valgt inn.
+          Formann H. Ødegaard kalte møtet «temmelig frekt overfor Vognmannsforeningen».</p>
+        <p class="ev__src">Moss Avis, 5.12.1946</p>
+        {{CLIPS:utklipp-1946-moss-avis-1946}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era1)">
+      <div class="ev__year num">1948<span class="ev__date">6. januar</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head"><cite>«Lastebileierne i Moss mener 100 biler dekker behovet»</cite></h3>
+        <p>Bevillingstallet har vandret fra 35 til 105 til 100. Ny formann Hans Bredesen er kritisk
+          til at ordningen låser antall biler per utøver: «I en by som Moss med en industri i stadig
+          utvikling og med stigende transportbehov…»</p>
+        <p class="ev__src">Moss Avis, 6.1.1948</p>
+        {{CLIPS:utklipp-19480106-moss-avis}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era1)">
+      <div class="ev__year num">1949<span class="ev__date">4. februar</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head"><cite>«Transportbransjen i Moss lider under stillheten i byggefaget»</cite></h3>
+        <p>Stagnasjonen i byggebransjen rammer lastebileierne hardt; bedriftskjøringen holder seg
+          stabil. Samme dag, i egen notis om materiellet: gjennomsnittsalderen på bilene i Moss er
+          ni år, fem søknader om nye biler ligger inne, og behovet er femten til.
+          28 nye lastebiler har kommet inn i foreningen etter krigen.</p>
+        <p class="ev__src">Moss Avis, 4.2.1949 · to utklipp samme dag</p>
+        {{CLIPS:utklipp-19490204-moss-avis-bransjen-lider,utklipp-19490204-moss-avis-bilmateriellet-bade-og}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era1)">
+      <div class="ev__year num">1951<span class="ev__date">6. juni</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head">Fylkesmøte i Moss Hotell — og en resolusjon om bensinprisen</h3>
+        <p>Vognmannsforeningen er vertskap for Norges Lastebileierforbunds Østfold-avdeling.
+          Møtet vedtar resolusjon mot høye bensinpriser og avgifter: «Vi fordrer nå i likhet med
+          bønder og fiskere en rimelig reduksjon, slik at yrket igjen kan bli levelig for utøverne»
+          — og at bilavgiftene må gå til veiene.</p>
+        <p>Etterpå inviterte foreningen til middag «sammen med våre damer i Moss Hotells prektige
+          selskapslokaler».</p>
+        <p class="ev__src">Moss Avis, 6.6.1951</p>
+        {{CLIPS:utklipp-19510606-moss-avis-060651}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era1)">
+      <div class="ev__year num">1954<span class="ev__date">15. mai</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head">15-årsjubileum — og kampen for enkene</h3>
+        <p>Foreningen arrangerer fylkesmøte i Moss samme dag som den feirer sitt 15-årsjubileum.
+          Dette er det ene av de to beleggene for stiftelsesåret 1939.</p>
+        <p>Saken som samler alle: Samferdselsdepartementets forslag om at en bevilling ikke kan
+          overdras, og at enker etter bevillingshavere ikke skal ha krav på å fortsette kjøringen.
+          Motstanden er unison — «et helt absurd forslag».</p>
+        <p class="ev__src">Sarpsborg Arbeiderblad, 22.5.1954</p>
+        {{CLIPS:utklipp-19540522-sarpsborg-arbeiderblad-kjemper-med-nebb-og-klor}}
+      </div>
+    </article>
+
+    <!-- ══ EPOKE 2 ═══════════════════════════════════════════════════ -->
+    <section class="era era--2" id="epoke2">
+      <span class="span">Epoke 2 · 1955–1979</span>
+      <h2>Fra forening til forretning</h2>
+      <p>Vognmennene vil ut av den offentlige sentralen og drive selv. På tjue år går de fra
+        søknadsskriv til aksjeselskap, egne kontorer, 12-tonns trailere, gravemaskiner — og
+        endelig egen tomt.</p>
+    </section>
+
+    <article class="ev" style="--dot:var(--era2)">
+      <div class="ev__year num">1955<span class="ev__date">20. mai</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head"><cite>«Moss Vognmannsforening vil danne egen transportsentral»</cite></h3>
+        <p>Søknad til Samferdselsnemnda om å komme ut av fellesområdet Moss–Rygge–Våler og drive
+          egen formidlingssentral. Også Våler vil ha eget kjørekontor. Saken går til departementet.</p>
+        <p class="ev__src">Moss Avis, 20.5.1955</p>
+        {{CLIPS:utklipp-19550520}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era2)">
+      <div class="ev__year num">1960<span class="ev__date">8. april</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head">A/S Biltransport registreres</h3>
+        <p>Aksjeselskap registrert i Moss «med formål å organisere og forestå formidling av
+          lastebiltransport samt bilspedisjon». Det juridiske skallet som gjør 1962 mulig.</p>
+        <p class="ev__src">Omtalt i Moss Avis 31.3.1962<span class="indirect">indirekte kilde</span></p>
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era2)">
+      <div class="ev__year num">1962<span class="ev__date">31. mars</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head"><cite>«Nytt aksjeselskap avløser Transportsentralen i Moss»</cite></h3>
+        <p>Samferdselsdepartementet opphever tilslutningsplikten fra 1. mars. Generalforsamlingen
+          vedtar med 35 mot 21 stemmer å avvikle sentralen og la lastebileierne selv danne ny
+          sentral på forretningsmessig basis.</p>
+        <p class="ev__who">Formann i den avtroppende sentralen: <b>Jens Asp</b>.
+          Formann i Moss Vognmannsforening: <b>Karl A. Nygaard</b>.</p>
+        <p class="ev__src">Moss Avis, 31.3.1962</p>
+        {{CLIPS:utklipp-19620331-moss-avis-310362}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era2)">
+      <div class="ev__year num">1962<span class="ev__date">5. desember</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head">Moss Transportsentral annonserer</h3>
+        <p>«Stiller til Deres disposisjon 12 tonns trailere, krankapasitet 3 tonn, lastebiler,
+          tippbiler og varevogner. Telefon 2800.» Første gang virksomheten selger seg selv
+          som en samlet tjeneste.</p>
+        <p class="ev__src">Moss Avis, 5.12.1962 · annonse</p>
+        {{CLIPS:utklipp-19621205-moss-avis-annonse-moss-transportsentral}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era2)">
+      <div class="ev__year num">1963<span class="ev__date">2. mai</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head">Nye kontorer i Jeløygaten</h3>
+        <p>Sentralen flytter inn i Brua Bensin og Servicestasjon. Telefonvakten utvides til
+          07–19 fem dager i uka, og materiellet spenner nå fra 12-tonns trailere ned til
+          1-tonns varevogner — «samt gravemaskiner». Nytt nummer: 1889.</p>
+        <p class="ev__src">Moss Avis, 2.5.1963 · annonse</p>
+        {{CLIPS:utklipp-19630502-mossavis-annonse-nye-lokaler}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era2)">
+      <div class="ev__year num">1964</div>
+      <div class="ev__body">
+        <h3 class="ev__head">5000 kubikkmeter masse ut av byen</h3>
+        <p>Moss Transportsentral kjører bort massene fra tomta til den nye høyere skolen —
+          «en kontinuerlig massehenting». Entreprenør: Ole Thorsnes. Et konkret bilde av
+          hvordan sentralen bygde Moss.</p>
+        <p class="ev__src">Moss Avis, 1964</p>
+        {{CLIPS:utklipp-1964-moss-avis-5000kbm-masse-skal-kjores-bort}}
+      </div>
+    </article>
+
+    <div class="gap"><span>Arkivet er stille · 1964–1976</span></div>
+
+    <article class="ev" style="--dot:var(--era2)">
+      <div class="ev__year num">1976</div>
+      <div class="ev__body">
+        <h3 class="ev__head">Tomta på Solgaard Skog kjøpes</h3>
+        <p>Etter «en tildels omflakkende tilværelse rundt om i Moss» sikrer firmaet seg endelig
+          egen grunn. Det tar ti år før bygget står der.</p>
+        <p class="ev__src">Omtalt i Moss Dagblad 31.5.1986<span class="indirect">indirekte kilde</span></p>
+        {{CLIPS:pre1991-transportsentralen-as-moss-med-bilpark-xt4s7074}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era2)">
+      <div class="ev__year num">1979<span class="ev__date">7. mai</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head">40 år — <cite>«Lite å gjøre i vinter»</cite></h3>
+        <p>Jubileumsfest på Støtvigs Hotell i Larkollen, men overskriften er alt annet enn
+          feststemt: «sentral aksjon mot samferdselsmyndighetene?» Kritikken går på at man ikke
+          lenger får ta opptil tre oppdrag per tur, bare ett, og på behovsprøving av løyver for
+          biler over 18 tonn. En ny lastebil koster 300 000 kroner.</p>
+        <p class="ev__who"><b>På jubileumsbildet, f.v.:</b> Lars Erik Drillestad, Harry Poulsen,
+          Jens Asp, Svein Olafsen, Terje Johnsen, Per Ringstad. Lokal formann: Svein Olafsen.</p>
+        <p class="ev__src">Moss Avis, 7.5.1979 · her står også hele det første styret fra 1939</p>
+        {{CLIPS:utklipp-19790507-moss-avis-vognmannsforening-40-ar}}
+      </div>
+    </article>
+
+    <div class="gap"><span>Arkivet er stille · 1979–1986</span></div>
+
+    <!-- ══ EPOKE 3 ═══════════════════════════════════════════════════ -->
+    <section class="era era--3" id="epoke3">
+      <span class="span">Epoke 3 · 1986–1992</span>
+      <h2>Moss Transportforum blir til</h2>
+      <p>Ny terminal, nytt navn, «flying start» og tidlig datasatsing — og så en feilinvestering
+        som koster tjue arbeidsplasser og disponenten jobben. Seks år fra topp til bunn.</p>
+    </section>
+
+    <article class="ev ev--mark">
+      <div class="ev__year num">1986<span class="ev__date">30. mai</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head">Navnet Moss Transportforum tas i bruk</h3>
+        <p>Transportsentralen A/S innvier nytt terminalanlegg på Solgaard Skog og foretar
+          samtidig navneendring til A/S Moss Transportforum. Dette er selskapets egentlige
+          fødselsdag — og grunnlaget for 40-årsjubileet 11. september 2026.</p>
+        <p>Anlegget: 80 meter langt og 27 meter bredt varmtlager, pluss moderne
+          administrasjonsbygning bygget opp rundt det gamle kornmagasinet som lå på tomta.
+          Omsetning oppgitt til rundt 20 millioner kroner.</p>
+        <p class="ev__who">På bildet avduker styreformann <b>Arvid Eian</b> og disponent
+          <b>Georg Brynildsen</b> skiltet. Foto: Rune Lysø. Tekst: Claus Diseth.</p>
+        <p class="ev__src">Moss Dagblad, 31.5.1986 — <cite>«Alt fra krydder til elektronikk»</cite></p>
+        {{CLIPS:utklipp-19860531-moss-dagblad-transportforum-etablert,utklipp-19860531-moss-dagblad-transportforum-innviet}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era3)">
+      <div class="ev__year num">1986<span class="ev__date">31. oktober</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head"><cite>«Mosseterminalen har fått en flying start»</cite></h3>
+        <p>Fem måneder etter åpningen har 250 biler fullt opp å gjøre, og av 4500 kvadratmeter
+          lagerplass er det «knapt en meter igjen». Selskapet har 112 aksjonærer og 10 ansatte.</p>
+        <p>Argumentet er beliggenheten, og den er den samme i dag: én time fra Oslo, 200 meter fra
+          E6, nær E18, havn, jernbane og fergene til Horten og Fredrikshavn.
+          «Moss ligger midt i verden — også når det gjelder transport.»</p>
+        <p class="ev__src">Moss Avis, 31.10.1986</p>
+        {{CLIPS:utklipp-19861031-moss-avis-flying-start}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era3)">
+      <div class="ev__year num">1989<span class="ev__date">7. desember</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head">Én av syv i landet som tar i bruk data</h3>
+        <p>MTF er blant de første syv bedriftene som tar i bruk mossefirmaet D.SIGN sitt
+          dataprogram for transportbransjen: ordreregistrering, oppdragsplanlegging, fakturering,
+          bil- og sjåføravregning, statistikk og lønnsomhetsanalyser — og under utvikling,
+          rutiner mot tollvesenets nye papirfrie system.</p>
+        <p>Dette er forløperen til alt som skjer i 2026. Samme mentalitet, annen teknologi.</p>
+        <p class="ev__src">Moss Dagblad, 7.12.1989 · på bildet: Georg Brynildsen (MTF), Lars Helland og Glenn Nordholmen (D.SIGN)</p>
+        {{CLIPS:utklipp-19891207-moss-dagblad-it-losning}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era3)">
+      <div class="ev__year num">1990<span class="ev__date">–91</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head">30 vogntog fra H. Kristiansen &amp; Sønner</h3>
+        <p>MTF overtar bilparken og sjåførene fra transportfirmaet H. Kristiansen &amp; Sønner.
+          Femten måneder senere er dette selskapets største problem.</p>
+        <p class="ev__src">Omtalt i Moss Avis 4.4.1992<span class="indirect">indirekte kilde</span></p>
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era3)">
+      <div class="ev__year num">1992<span class="ev__date">4. april</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head"><cite>«Moss Transportforum må si opp 20 ansatte»</cite></h3>
+        <p>De tjue er sjåfører, som tilbys å kjøpe selskapets biler og deretter kjøre for MTF på
+          leiebasis. Fem har allerede takket ja; ti av bilene står avskiltet.</p>
+        <p>De tillitsvalgte er ikke med på det: «Vi ble forespeilet en trygg og solid arbeidsplass
+          da Moss Transportforum overtok bilparken på 30 biler. I dag — 15 måneder senere — står
+          vi uten jobber.» Disponentens svar: «Det var en feilinvestering.»</p>
+        <p class="ev__who"><b>Tillitsvalgte:</b> Erik Corneliussen (hovedtillitsvalgt),
+          Helmuth Nikolaisen Bang (verneombud), Truls Widell.</p>
+        <p class="ev__src">Moss Avis, 4.4.1992 · tekst Knut E. Johansen, foto Terje Holm</p>
+        {{CLIPS:utklipp-19920404-moss-avis-mtf-sier-opp-20-ansatte}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era3)">
+      <div class="ev__year num">1992<span class="ev__date">8. mai</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head"><cite>«Disponenten fjernet i Moss Transportforum»</cite></h3>
+        <p>En måned senere er Georg Brynildsen oppsagt av styret etter over ti år som leder.
+          Terje Lillegaard ansettes som ny daglig leder. Styreformann Arvid Eian understreker at
+          det er en ordinær oppsigelse uten uregelmessigheter: «Styret har vurdert administrasjonen
+          over lengre tid.»</p>
+        <p>En stygg detalj: en usignert pressemelding på MTFs eget brevark, med sjikanerende omtale
+          av selskapets ledelse, var blitt distribuert i Moss. Brynildsen anmeldte saken til politiet.</p>
+        <p class="ev__src">Moss Avis, 8.5.1992 · tekst Finn Saugestad</p>
+        {{CLIPS:utklipp-19920508-moss-avis-disponenten-fjernet}}
+      </div>
+    </article>
+
+    <!-- ══ EPOKE 4 ═══════════════════════════════════════════════════ -->
+    <section class="era era--4" id="epoke4">
+      <span class="span">Epoke 4 · 1993–2026</span>
+      <h2>Ny giv, vekst — og elektrifisering</h2>
+      <p>Selskapet reiser seg. Attføringssamarbeid, fergekamp, dieselaksjon, oppkjøp fra Oslo —
+        og til slutt en terminal som produserer sin egen strøm.</p>
+    </section>
+
+    <article class="ev" style="--dot:var(--era4)">
+      <div class="ev__year num">1993<span class="ev__date">25. august</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head">Stortingsrepresentanten som ble hjelpemann</h3>
+        <p>Kjellaug Nakkim (H) tilbrakte en dag som hjelpemann på en lastebil fra Moss
+          Transportforum. Konklusjonen hennes: over 80 prosent av alle transportoppdrag i landet
+          går kortere enn 30 kilometer — der kan ikke jernbanen utkonkurrere lastebilen.
+          Hun angriper investeringsavgiften på syv prosent og den kommende vektårsavgiften.</p>
+        <p class="ev__src">Moss Avis, 25.8.1993 · tekst Finn Saugestad</p>
+        {{CLIPS:utklipp-19930825-moss-avis-politiker-som-hjelpemann}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era4)">
+      <div class="ev__year num">1994<span class="ev__date">22. desember</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head"><cite>«Transportguttene fikk bank av jentene»</cite></h3>
+        <p>Bedriftstennis, 2. divisjon: Morten Nore og Knut Ekerholt fra Moss Transportforum taper
+          4–2 mot Unni S. Hjelseth og Margot Kleppe fra Den norske Bank. Moss Avis er nådeløs:
+          «4-2 er sifrene som blir stående i protokollene for all ettertid...»</p>
+        <p>Første gang Morten Nore dukker opp i arkivet.</p>
+        <p class="ev__src">Moss Avis, 22.12.1994</p>
+        {{CLIPS:utklipp-19941222-moss-avis-gutta-fikk-bank-av-jentene}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era4)">
+      <div class="ev__year num">1995<span class="ev__date">26. april</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head"><cite>«Samarbeid ga ny jobb»</cite></h3>
+        <p>Jan Ove Brabo (28) omskoleres på drøyt et år gjennom et samarbeid mellom Arbeidskontoret
+          i Moss, Bråthe Trafikkskole og Moss Transportforum — førerkort klasse CDE, ADR-kurs,
+          kran- og truckførerkurs, med praksis hos MTF. Det endte i fast jobb.</p>
+        <p>Morten Nore om hvorfor det lokale næringslivet må stille opp: «Transportyrket er ikke
+          lenger bare å sitte bak et ratt og frakte gods fra A til B.»</p>
+        <p class="ev__src">Moss Avis, 26.4.1995 · tekst og foto Finn Saugestad</p>
+        {{CLIPS:utklipp-19950426-moss-avis-samarbeid-ga-ny-jobb}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era4)">
+      <div class="ev__year num">1997<span class="ev__date">20. mars</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head"><cite>«Fornøyde yrkessjåfører»</cite> om nye Bastø I</h3>
+        <p>Moss Avis møter en gjeng MTF-sjåfører i kafeteriaen ombord på nye «Bastø I». De hadde
+          vært blant de mest kritiske til forgjengerne «Einar Tambarskjelve» og «Holger Stjern»,
+          men roser nå ilandkjøringsfasilitetene og håper på hyppigere avganger og slutt på
+          timelang venting.</p>
+        <p class="ev__who"><b>På bildet:</b> Kurt Stenrud, Vidar Holmgren, Per Arne Aasen og
+          Per Ivar Holmgren — alle fra Moss Transportforum.</p>
+        <p class="ev__src">Moss Avis, 20.3.1997 · tekst Finn Saugestad, foto Jon-Ivar Fjeld</p>
+        {{CLIPS:utklipp-19970320-moss-avis-fornoyd-med-basto-ferja}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era4)">
+      <div class="ev__year num">2000<span class="ev__date">27. januar</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head">Dieselaksjonen — <cite>«Ingen ut, ingen inn»</cite></h3>
+        <p>Lastebileierne blokkerer fergene i Moss og innkjøringen til Solgård skog. Geir Torgersen
+          og kolleger sperrer inn- og utkjøring fra Moss Transportforum; all varetransport stopper,
+          kun privatbiler slipper gjennom. Blokaden avblåses klokka 06.00 torsdag morgen.</p>
+        <p>Parallelt stenges grenseovergangen på Svinesund i et døgn. Finansminister Gudmund
+          Restad er «uforstående til aksjonen».</p>
+        <p class="ev__who"><b>Aksjonsleder:</b> Steinar Enderød, formann i Moss og Omegn
+          Vognmannsforening.</p>
+        <p class="ev__src">Moss Avis, 27.1.2000 · tekst Helge Warberg-Knoll og Per L. Johansen</p>
+        {{CLIPS:utklipp-20000127-moss-avis-blokade}}
+      </div>
+    </article>
+
+    <article class="ev" style="--dot:var(--era4)">
+      <div class="ev__year num">2007<span class="ev__date">4. januar</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head"><cite>«Vokser seg ut av Moss»</cite></h3>
+        <p>Året før ble Moss Transportforum kjøpt opp av Transportsentralen i Oslo, som nå eier
+          87 prosent av aksjene — resten fordelt på 27 lastebileiere. MTF disponerer 60 biler og
+          hadde i 2005 en omsetning på 64 millioner kroner.</p>
+        <p>Morten Nore, nå leder, ser seg om etter plass: 120 mål på Deli skog i Vestby er sikret
+          sammen med NCC, og Rygge er aktuelt med den kommende flyplassen. Om Moss:
+          «Vi er temmelig sikre på at det vil bli vanskelig å ligge på Solgård skog i framtida.»</p>
+        <p class="ev__src">Moss Avis, 4.1.2007 · tekst og foto Jon Gran</p>
+        {{CLIPS:utklipp-20070104-moss-avis-vokser-seg-ut-av-moss}}
+      </div>
+    </article>
+
+    <div class="gap"><span>Ikke dekket av arkivet · 2007–2026 · fylles fra interne kilder</span></div>
+
+    <article class="ev ev--mark">
+      <div class="ev__year num">2026<span class="ev__date">11. september</span></div>
+      <div class="ev__body">
+        <h3 class="ev__head">40 år som Moss Transportforum</h3>
+        <p>Dagprogram på Rampa i Vålerveien fra klokka 14: snorklipping av ladere, Powerskap,
+          kabler, solceller og ladestasjoner — hele infrastrukturen vises fram.
+          Kveldsprogram i Storsalen på Moss Samfunnshus fra 18.30.</p>
+        <p>Åttisju år etter at foreningen ble stiftet for å få kontroll på lastebilkjøringen i
+          distriktet, og åtti år etter at medlemmene satte bilene <em>og</em> hestene på båsen,
+          handler det igjen om hva som driver kjøretøyene.</p>
+        <p class="ev__src">MTF 40 år · Fra transporthistorie til fremtidens logistikk</p>
+      </div>
+    </article>
+
+  </main>
+
+  <!-- ══ FOTOALBUM ═══════════════════════════════════════════════════ -->
+  <section class="album" id="album">
+    <div class="album__head">
+      <span class="span">Fotoalbum · Del 1</span>
+      <h2>Før 1991</h2>
+      <p>Biler, bygg, folk og papirer fra tiden som vognmannsforening og transportsentral —
+        spesialtransporter med politieskorte, styreportretter og prislister fra 1983.</p>
+    </div>
+    {{GALLERY:pre1991}}
+  </section>
+
+  <section class="album">
+    <div class="album__head">
+      <span class="span">Fotoalbum · Del 2</span>
+      <h2>1991 til i dag</h2>
+      <p>Fra arkivet etter 1991 — terminalen, bilene og menneskene i Moss Transportforum.</p>
+    </div>
+    {{GALLERY:1991idag}}
+  </section>
+
+  <p class="foot">
+    Tidslinjen bygger på 30 avisutklipp hentet fra Nasjonalbiblioteket, gjennomgått august 2026.
+    Arkivet har to hull: ingenting mellom 1964 og 1979, og ingenting etter 2007.
+    Faksimiler gjengitt etter avtale med Moss Avis / Amedia.
+    Fotografier: Moss Transportforums arkiv v/ Ketil Haugland.
+    Albumet utvides frem mot jubileet 11. september 2026.
+  </p>
+
+</div>
+
+<!-- ══ LYSBILDEVISNING ═══════════════════════════════════════════════ -->
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Bildevisning">
+  <button class="lb__close" id="lbClose" aria-label="Lukk">✕</button>
+  <div class="lb__stage" id="lbStage"><img id="lbImg" alt=""></div>
+  <div class="lb__bar">
+    <button id="lbPrev" aria-label="Forrige bilde">‹</button>
+    <div class="lb__cap" id="lbCap"></div>
+    <div class="lb__count" id="lbCount"></div>
+    <button id="lbNext" aria-label="Neste bilde">›</button>
+  </div>
+</div>
+
+<script>
+const META = {{META_JSON}};
+const FULL = {{FULL_JSON}};
+
+(function(){
+  const lb = document.getElementById('lb');
+  const img = document.getElementById('lbImg');
+  const cap = document.getElementById('lbCap');
+  const cnt = document.getElementById('lbCount');
+  let seq = [], idx = 0, lastFocus = null;
+
+  function show(i){
+    idx = (i + seq.length) % seq.length;
+    const slug = seq[idx];
+    const m = META[slug] || {};
+    img.src = FULL[slug];
+    img.alt = m.cap || '';
+    cap.innerHTML = '<b>' + (m.cap || '') + '</b>' + (m.sub ? '<span>' + m.sub + '</span>' : '');
+    cnt.textContent = (idx + 1) + ' / ' + seq.length;
+  }
+  function open(slug, group){
+    seq = Object.keys(META).filter(s => META[s].g === group);
+    lastFocus = document.activeElement;
+    lb.hidden = false;
+    document.body.classList.add('lb-open');
+    show(seq.indexOf(slug));
+    document.getElementById('lbClose').focus();
+  }
+  function close(){
+    lb.hidden = true;
+    img.src = '';
+    document.body.classList.remove('lb-open');
+    if (lastFocus) lastFocus.focus();
+  }
+
+  document.addEventListener('click', e => {
+    const b = e.target.closest('button[data-img]');
+    if (b) open(b.dataset.img, b.dataset.group);
+  });
+  document.getElementById('lbClose').addEventListener('click', close);
+  document.getElementById('lbPrev').addEventListener('click', () => show(idx - 1));
+  document.getElementById('lbNext').addEventListener('click', () => show(idx + 1));
+  document.getElementById('lbStage').addEventListener('click', e => { if (e.target === e.currentTarget) close(); });
+  document.addEventListener('keydown', e => {
+    if (lb.hidden) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') show(idx - 1);
+    else if (e.key === 'ArrowRight') show(idx + 1);
+  });
+
+  let x0 = null;
+  lb.addEventListener('pointerdown', e => { x0 = e.clientX; });
+  lb.addEventListener('pointerup', e => {
+    if (x0 === null) return;
+    const dx = e.clientX - x0; x0 = null;
+    if (Math.abs(dx) > 50) show(idx + (dx < 0 ? 1 : -1));
+  });
+})();
+</script>
