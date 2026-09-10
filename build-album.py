@@ -62,24 +62,39 @@ def clip_caption(slug):
 def esc(s):
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
 
-def datauri(path):
-    return "data:image/webp;base64," + base64.b64encode(path.read_bytes()).decode()
+def datauri(path, mime="image/webp"):
+    return f"data:{mime};base64," + base64.b64encode(Path(path).read_bytes()).decode()
 
-# ── META + FULL ───────────────────────────────────────────────────────────
-meta, full, thumbs = {}, {}, {}
-for group in ["pre1991", "1991idag", "utklipp"]:
-    for item in manifest[group]:
-        slug = item["slug"]
-        if group == "utklipp":
-            paper, date = clip_caption(slug)
-            meta[slug] = {"g": "utklipp", "cap": f"{paper}, {date}", "sub": "Faksimile via Nasjonalbiblioteket"}
-        else:
-            cap = PHOTO_CAPS.get(slug, "Fra fotoarkivet")
-            meta[slug] = {"g": group, "cap": cap, "sub": PHOTO_SUB[group]}
-        full[slug] = datauri(SCRATCH / "web/full" / f"{slug}.webp")
-        thumbs[slug] = datauri(SCRATCH / "web/thumb" / f"{slug}.webp")
+def photo_caption(slug):
+    if slug in PHOTO_CAPS:
+        return PHOTO_CAPS[slug]
+    base = re.sub(r"-xt4s\w+(-copy)?$", "", slug)          # dropp filnummer-suffiks
+    return PHOTO_CAPS.get(base, "Fra fotoarkivet")
 
 html = TEMPLATE.read_text()
+
+# Bare bildene som faktisk vises (utklipp + foto brukt i {{CLIPS}}) bakes inn —
+# fotoalbumet er erstattet av bildekarusellen, så galleribildene droppes.
+used = set()
+for m in re.finditer(r"\{\{CLIPS:([^}]+)\}\}", html):
+    used.update(s.strip() for s in m.group(1).split(","))
+slug_group = {item["slug"]: group
+              for group in ["pre1991", "1991idag", "utklipp"]
+              for item in manifest[group]}
+
+# ── META + FULL (kun brukte bilder) ─────────────────────────────────────────
+meta, full, thumbs = {}, {}, {}
+for slug in used:
+    group = slug_group.get(slug)
+    if group is None:
+        raise SystemExit(f"Ukjent bilde-slug i mal: {slug}")
+    if group == "utklipp":
+        paper, date = clip_caption(slug)
+        meta[slug] = {"g": "utklipp", "cap": f"{paper}, {date}", "sub": "Faksimile via Nasjonalbiblioteket"}
+    else:
+        meta[slug] = {"g": group, "cap": photo_caption(slug), "sub": "Moss Transportforums arkiv"}
+    full[slug] = datauri(SCRATCH / "web/full" / f"{slug}.webp")
+    thumbs[slug] = datauri(SCRATCH / "web/thumb" / f"{slug}.webp")
 
 # ── {{CLIPS:slug1,slug2}} ────────────────────────────────────────────────
 def clips_repl(m):
@@ -106,23 +121,15 @@ def clips_repl(m):
 
 html = re.sub(r"\{\{CLIPS:([^}]+)\}\}", clips_repl, html)
 
-# ── {{GALLERY:group}} ────────────────────────────────────────────────────
-def gallery_repl(m):
-    group = m.group(1)
-    cells = []
-    for item in manifest[group]:
-        s = item["slug"]
-        cap = meta[s]["cap"]
-        cells.append(
-            f'<button data-img="{s}" data-group="{group}" aria-label="Vis bilde: {esc(cap)}">'
-            f'<img src="{thumbs[s]}" alt="{esc(cap)}" loading="lazy"></button>'
-        )
-    return '<div class="grid">' + "".join(cells) + "</div>"
-
-html = re.sub(r"\{\{GALLERY:([^}]+)\}\}", gallery_repl, html)
+# ── {{POSTER}} — plakatbilde til bildekarusell-lenken ───────────────────────
+poster = HERE / "karusell-poster.jpg"
+if "{{POSTER}}" in html:
+    if not poster.exists():
+        raise SystemExit(f"Mangler plakatbilde: {poster}")
+    html = html.replace("{{POSTER}}", datauri(poster, "image/jpeg"))
 
 html = html.replace("{{META_JSON}}", json.dumps(meta, ensure_ascii=False))
 html = html.replace("{{FULL_JSON}}", json.dumps(full))
 
 OUT.write_text(html)
-print(f"Skrev {OUT} ({OUT.stat().st_size/1e6:.1f} MB), {len(meta)} bilder")
+print(f"Skrev {OUT} ({OUT.stat().st_size/1e6:.1f} MB), {len(meta)} bilder innbakt")

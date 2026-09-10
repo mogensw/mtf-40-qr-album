@@ -219,23 +219,40 @@ h1 .yrs{font-variant-numeric:tabular-nums; color:var(--muted); font-weight:400; 
   margin:0; letter-spacing:-.01em;
 }
 .album__head p{color:var(--muted); font-size:.99rem; max-width:54ch; margin:.7rem 0 0}
-.grid{
-  display:grid; gap:.7rem; margin-top:1.6rem;
-  grid-template-columns:repeat(auto-fill, minmax(9.5rem, 1fr));
+/* Filmkort — lenke til bildekarusellen */
+.filmcard{
+  position:relative; display:block; margin-top:1.6rem; overflow:hidden;
+  aspect-ratio:16/9; border:1px solid var(--line); border-radius:3px;
+  background:#0b0f13; text-decoration:none;
 }
-@media (min-width:720px){ .grid{grid-template-columns:repeat(auto-fill, minmax(12rem, 1fr)); gap:.9rem} }
-.grid button{
-  position:relative; display:block; width:100%; aspect-ratio:4/3; padding:0;
-  border:1px solid var(--line); border-radius:2px; overflow:hidden;
-  background:var(--surface); cursor:zoom-in;
-}
-.grid button:hover img{transform:scale(1.04)}
-.grid button:focus-visible{outline:2px solid var(--blue); outline-offset:2px}
-.grid img{
+.filmcard img{
   width:100%; height:100%; object-fit:cover; display:block;
-  transition:transform .35s ease;
+  opacity:.9; transition:opacity .3s ease, transform .5s ease;
 }
-@media (prefers-reduced-motion:reduce){ .grid img{transition:none} .grid button:hover img{transform:none} }
+.filmcard:hover img, .filmcard:focus-visible img{opacity:1; transform:scale(1.03)}
+.filmcard:focus-visible{outline:2px solid var(--blue); outline-offset:2px}
+.filmcard__play{position:absolute; inset:0; display:flex; align-items:center; justify-content:center}
+.filmcard__play > span{
+  width:4.8rem; height:4.8rem; border-radius:50%; background:rgba(255,255,255,.94);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 6px 24px rgba(0,0,0,.45); transition:transform .2s ease, background .2s ease;
+}
+.filmcard:hover .filmcard__play > span, .filmcard:focus-visible .filmcard__play > span{transform:scale(1.09); background:#fff}
+.filmcard__play svg{width:1.8rem; height:1.8rem; margin-left:.28rem; fill:var(--blue)}
+.filmcard__badge{
+  position:absolute; left:0; right:0; bottom:0; padding:2.4rem .95rem .8rem; color:#fff;
+  font-family:var(--font-head); font-weight:600; font-size:.92rem; line-height:1.35;
+  background:linear-gradient(to top, rgba(0,0,0,.78), rgba(0,0,0,.28) 55%, transparent);
+}
+.filmhint{
+  font-family:var(--font-head); font-size:.78rem; color:var(--faint);
+  letter-spacing:.03em; margin:.65rem 0 0;
+}
+@media (prefers-reduced-motion:reduce){
+  .filmcard img{transition:none}
+  .filmcard:hover img, .filmcard:focus-visible img{transform:none}
+  .filmcard:hover .filmcard__play > span{transform:none}
+}
 
 /* ── Lysbilde (lightbox) ─────────────────────────────────────────────── */
 .lb{
@@ -302,10 +319,10 @@ body.lb-open{overflow:hidden}
   <header class="masthead">
     <p class="kicker">Moss Transportforum · Jubileum 2026</p>
     <h1>Fra transporthistorie til fremtidens logistikk
-      <span class="yrs num">Tidslinje og album 1939–2026</span></h1>
+      <span class="yrs num">Tidslinje og bildekarusell 1939–2026</span></h1>
     <p class="standfirst">Digital utgave av tidslinjen i jubileumsmagasinet — her med alle
-      avisutklippene i lesbar størrelse og et fotoalbum fra arkivet.
-      Trykk på et utklipp eller bilde for å se det stort.</p>
+      avisutklippene i lesbar størrelse. Trykk på et utklipp for å se det stort,
+      og se hele historien som bildekarusell nederst.</p>
     <p class="sourceline">
       Kilder: Moss Avis, Moss Dagblad og Sarpsborg Arbeiderblad, 1940–2007, via Nasjonalbiblioteket.
       Kursiv angir ordrett sitert avisoverskrift.
@@ -316,7 +333,7 @@ body.lb-open{overflow:hidden}
       <li><a href="#epoke2"><span class="sw" style="background:var(--era2)"></span><span class="n num">1955–1979</span> Fra forening til forretning</a></li>
       <li><a href="#epoke3"><span class="sw" style="background:var(--era3)"></span><span class="n num">1986–1992</span> Moss Transportforum blir til</a></li>
       <li><a href="#epoke4"><span class="sw" style="background:var(--era4)"></span><span class="n num">1993–2026</span> Ny giv og elektrifisering</a></li>
-      <li><a class="to-album" href="#album">Fotoalbum ↓</a></li>
+      <li><a class="to-album" href="#album">Bildekarusell ↓</a></li>
     </ul>
   </header>
 
@@ -809,32 +826,30 @@ body.lb-open{overflow:hidden}
 
   </main>
 
-  <!-- ══ FOTOALBUM ═══════════════════════════════════════════════════ -->
+  <!-- ══ BILDEKARUSELL ═══════════════════════════════════════════════ -->
   <section class="album" id="album">
     <div class="album__head">
-      <span class="span">Fotoalbum · Del 1</span>
-      <h2>Før 1991</h2>
-      <p>Biler, bygg, folk og papirer fra tiden som vognmannsforening og transportsentral —
-        spesialtransporter med politieskorte, styreportretter og prislister fra 1983.</p>
+      <span class="span">Bildekarusell</span>
+      <h2>Historien som film</h2>
+      <p>Biler, bygg, folk og papirer fra hele reisen — spesialtransporter med politieskorte,
+        styreportretter, prislister og terminalen gjennom tidene, satt sammen til en film.</p>
     </div>
-    {{GALLERY:pre1991}}
-  </section>
-
-  <section class="album">
-    <div class="album__head">
-      <span class="span">Fotoalbum · Del 2</span>
-      <h2>1991 til i dag</h2>
-      <p>Fra arkivet etter 1991 — terminalen, bilene og menneskene i Moss Transportforum.</p>
-    </div>
-    {{GALLERY:1991idag}}
+    <a class="filmcard" href="https://f.io/7W5kQk2b" target="_blank" rel="noopener noreferrer"
+       aria-label="Spill av bildekarusellen (åpnes i ny fane)">
+      <img src="{{POSTER}}" alt="MTF gjennom 40 år — bildekarusell">
+      <span class="filmcard__play" aria-hidden="true">
+        <span><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+      </span>
+      <span class="filmcard__badge">Spill av bildekarusellen — MTF gjennom 40 år</span>
+    </a>
+    <p class="filmhint">Åpnes i ny fane · varer ca. 11 minutter</p>
   </section>
 
   <p class="foot">
     Tidslinjen bygger på 30 avisutklipp hentet fra Nasjonalbiblioteket, gjennomgått august 2026.
     Arkivet har to hull: ingenting mellom 1964 og 1979, og ingenting etter 2007.
     Faksimiler gjengitt etter avtale med Moss Avis / Amedia.
-    Fotografier: Moss Transportforums arkiv v/ Ketil Haugland.
-    Albumet utvides frem mot jubileet 11. september 2026.
+    Bildekarusell og fotografier: Moss Transportforums arkiv v/ Ketil Haugland.
   </p>
 
 </div>
