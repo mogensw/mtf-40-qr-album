@@ -73,14 +73,17 @@ def photo_caption(slug):
 
 html = TEMPLATE.read_text()
 
-# Bare bildene som faktisk vises (utklipp + foto brukt i {{CLIPS}}) bakes inn —
-# fotoalbumet er erstattet av bildekarusellen, så galleribildene droppes.
+# Bare bildene som faktisk vises bakes inn: utklipp/foto brukt i {{CLIPS}} +
+# hedersgjest-portretter brukt i {{PORTRAIT:slug}}. Galleribildene droppes.
 used = set()
 for m in re.finditer(r"\{\{CLIPS:([^}]+)\}\}", html):
     used.update(s.strip() for s in m.group(1).split(","))
-slug_group = {item["slug"]: group
-              for group in ["pre1991", "1991idag", "utklipp"]
-              for item in manifest[group]}
+for m in re.finditer(r"\{\{PORTRAIT:([^}]+)\}\}", html):
+    used.add(m.group(1).strip())
+
+groups = [g for g in ["pre1991", "1991idag", "utklipp", "hedersgjest"] if g in manifest]
+slug_group = {item["slug"]: group for group in groups for item in manifest[group]}
+hg_info = {item["slug"]: item for item in manifest.get("hedersgjest", [])}
 
 # ── META + FULL (kun brukte bilder) ─────────────────────────────────────────
 meta, full, thumbs = {}, {}, {}
@@ -91,6 +94,11 @@ for slug in used:
     if group == "utklipp":
         paper, date = clip_caption(slug)
         meta[slug] = {"g": "utklipp", "cap": f"{paper}, {date}", "sub": "Faksimile via Nasjonalbiblioteket"}
+    elif group == "hedersgjest":
+        hg = hg_info[slug]
+        meta[slug] = {"g": "hedersgjest",
+                      "cap": f"{hg['navn']} · {hg['tjeneste']} år i MTF",
+                      "sub": "Hedret på 40-årsjubileet 11.9.2026"}
     else:
         meta[slug] = {"g": group, "cap": photo_caption(slug), "sub": "Moss Transportforums arkiv"}
     full[slug] = datauri(SCRATCH / "web/full" / f"{slug}.webp")
@@ -120,6 +128,15 @@ def clips_repl(m):
     return '<div class="clips">' + "".join(btns) + f'</div><p class="cliphint">{hint}</p>'
 
 html = re.sub(r"\{\{CLIPS:([^}]+)\}\}", clips_repl, html)
+
+# ── {{PORTRAIT:slug}} — hedersgjest-portrett (thumb inline i tenure-oppføring) ─
+def portrait_repl(m):
+    slug = m.group(1).strip()
+    if slug not in thumbs:
+        raise SystemExit(f"Ukjent portrett-slug i mal: {slug}")
+    return thumbs[slug]
+
+html = re.sub(r"\{\{PORTRAIT:([^}]+)\}\}", portrait_repl, html)
 
 # ── {{POSTER}} — plakatbilde til bildekarusell-lenken ───────────────────────
 poster = HERE / "karusell-poster.jpg"

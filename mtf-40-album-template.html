@@ -174,6 +174,29 @@ h1 .yrs{font-variant-numeric:tabular-nums; color:var(--muted); font-weight:400; 
   border-left:2px solid var(--red); padding-left:1.4rem; margin-left:-1.4rem;
 }
 
+/* Milepæl · hedersgjest (menneskene som ble værende) */
+.ev--tenure{--dot:var(--palm)}
+.ev--tenure .ev__year{color:var(--palm)}
+:root[data-theme="dark"] .ev--tenure .ev__year,
+:root:not([data-theme="light"]) .ev--tenure .ev__year{color:var(--palm)}
+.ev__body--tenure{display:flex; gap:1rem; align-items:flex-start}
+.ev__body--tenure > div{min-width:0; flex:1}
+.ev__portraits{flex:0 0 auto; display:flex; gap:.45rem}
+.ev__portrait{
+  flex:0 0 auto; width:4.6rem; height:4.6rem; padding:0; border-radius:50%;
+  overflow:hidden; border:2px solid var(--palm); background:var(--surface);
+  cursor:zoom-in; line-height:0;
+}
+.ev__portrait img{width:100%; height:100%; object-fit:cover; display:block}
+.ev__portrait:hover{border-color:var(--blue)}
+.ev__portrait:focus-visible{outline:2px solid var(--blue); outline-offset:2px}
+.ev__tenure{
+  font-family:var(--font-head); font-size:.74rem; letter-spacing:.04em;
+  color:var(--faint); margin-top:.6rem;
+}
+.ev__tenure b{color:var(--palm); font-weight:600}
+@media (max-width:720px){ .ev__portrait{width:3.9rem; height:3.9rem} }
+
 .gap{
   display:grid; grid-template-columns:var(--rail) 1fr; column-gap:2.75rem;
   padding:1.1rem 0; position:relative;
@@ -320,8 +343,9 @@ body.lb-open{overflow:hidden}
     <p class="kicker">Moss Transportforum · Jubileum 2026</p>
     <h1>Fra transporthistorie til fremtidens logistikk
       <span class="yrs num">Tidslinje og bildekarusell 1939–2026</span></h1>
-    <p class="standfirst">Digital utgave av tidslinjen i jubileumsmagasinet — her med alle
-      avisutklippene i lesbar størrelse. Trykk på et utklipp for å se det stort,
+    <p class="standfirst">Digital utgave av tidslinjen i jubileumsmagasinet — med alle
+      avisutklippene i lesbar størrelse, og de langtjenende hedersgjestene lagt inn
+      der arkivet er tynt. Trykk på et utklipp eller portrett for å se det stort,
       og se hele historien som bildekarusell nederst.</p>
     <p class="sourceline">
       Kilder: Moss Avis, Moss Dagblad og Sarpsborg Arbeiderblad, 1940–2007, via Nasjonalbiblioteket.
@@ -330,7 +354,7 @@ body.lb-open{overflow:hidden}
 
     <ul class="eranav">
       <li><a href="#epoke1"><span class="sw" style="background:var(--era1)"></span><span class="n num">1939–1955</span> Kampen om bevillingene</a></li>
-      <li><a href="#epoke2"><span class="sw" style="background:var(--era2)"></span><span class="n num">1955–1979</span> Fra forening til forretning</a></li>
+      <li><a href="#epoke2"><span class="sw" style="background:var(--era2)"></span><span class="n num">1955–1985</span> Fra forening til forretning</a></li>
       <li><a href="#epoke3"><span class="sw" style="background:var(--era3)"></span><span class="n num">1986–1992</span> Moss Transportforum blir til</a></li>
       <li><a href="#epoke4"><span class="sw" style="background:var(--era4)"></span><span class="n num">1993–2026</span> Ny giv og elektrifisering</a></li>
       <li><a class="to-album" href="#album">Bildekarusell ↓</a></li>
@@ -512,7 +536,7 @@ body.lb-open{overflow:hidden}
 
     <!-- ══ EPOKE 2 ═══════════════════════════════════════════════════ -->
     <section class="era era--2" id="epoke2">
-      <span class="span">Epoke 2 · 1955–1979</span>
+      <span class="span">Epoke 2 · 1955–1985</span>
       <h2>Fra forening til forretning</h2>
       <p>Vognmennene vil ut av den offentlige sentralen og drive selv. På tjue år går de fra
         søknadsskriv til aksjeselskap, egne kontorer, 12-tonns trailere, gravemaskiner — og
@@ -603,6 +627,34 @@ body.lb-open{overflow:hidden}
       </div>
     </article>
 
+    <article class="ev ev--tenure" style="--dot:var(--palm)">
+      <div class="ev__year num">1977</div>
+      <div class="ev__body ev__body--tenure">
+        <span class="ev__portraits">
+          <button class="ev__portrait" data-img="hedersgjest-audun-holmgren" data-group="hedersgjest" aria-label="Vis portrett: Audun Holmgren"><img src="{{PORTRAIT:hedersgjest-audun-holmgren}}" alt="Audun Holmgren"></button>
+        </span>
+        <div>
+          <h3 class="ev__head">Audun Holmgren begynner</h3>
+          <p>En av dem som ble værende hele veien — femti år bak rattet for MTF når han runder i 2027.</p>
+          <p class="ev__tenure"><b>50 års tjeneste</b> · hedret på jubileet 11.9.2026</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="ev ev--tenure" style="--dot:var(--palm)">
+      <div class="ev__year num">1978</div>
+      <div class="ev__body ev__body--tenure">
+        <span class="ev__portraits">
+          <button class="ev__portrait" data-img="hedersgjest-jan-tore-vold" data-group="hedersgjest" aria-label="Vis portrett: Jan Tore Vold"><img src="{{PORTRAIT:hedersgjest-jan-tore-vold}}" alt="Jan Tore Vold"></button>
+        </span>
+        <div>
+          <h3 class="ev__head">Jan Tore Vold begynner</h3>
+          <p>Femti år i selskapet — «mtf.no» på brystet, fortsatt like blid.</p>
+          <p class="ev__tenure"><b>50 års tjeneste</b> · hedret på jubileet 11.9.2026</p>
+        </div>
+      </div>
+    </article>
+
     <article class="ev" style="--dot:var(--era2)">
       <div class="ev__year num">1979<span class="ev__date">7. mai</span></div>
       <div class="ev__body">
@@ -618,7 +670,34 @@ body.lb-open{overflow:hidden}
       </div>
     </article>
 
-    <div class="gap"><span>Arkivet er stille · 1979–1986</span></div>
+    <article class="ev ev--tenure" style="--dot:var(--palm)">
+      <div class="ev__year num">1982</div>
+      <div class="ev__body ev__body--tenure">
+        <span class="ev__portraits">
+          <button class="ev__portrait" data-img="hedersgjest-bjorn-stromnes" data-group="hedersgjest" aria-label="Vis portrett: Bjørn Strømnes"><img src="{{PORTRAIT:hedersgjest-bjorn-stromnes}}" alt="Bjørn Strømnes"></button>
+          <button class="ev__portrait" data-img="hedersgjest-rune-ringsrod" data-group="hedersgjest" aria-label="Vis portrett: Rune Ringsrød"><img src="{{PORTRAIT:hedersgjest-rune-ringsrod}}" alt="Rune Ringsrød"></button>
+        </span>
+        <div>
+          <h3 class="ev__head">Bjørn Strømnes og Rune Ringsrød begynner</h3>
+          <p>To sjåfører som ble i 45 år — der avisarkivet er tyngst å finne, står menneskene igjen.</p>
+          <p class="ev__tenure"><b>45 års tjeneste</b> · hedret på jubileet 11.9.2026</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="ev ev--tenure" style="--dot:var(--palm)">
+      <div class="ev__year num">1985</div>
+      <div class="ev__body ev__body--tenure">
+        <span class="ev__portraits">
+          <button class="ev__portrait" data-img="hedersgjest-per-arne-aasen" data-group="hedersgjest" aria-label="Vis portrett: Per Arne Aasen"><img src="{{PORTRAIT:hedersgjest-per-arne-aasen}}" alt="Per Arne Aasen"></button>
+        </span>
+        <div>
+          <h3 class="ev__head">Per Arne Aasen begynner</h3>
+          <p>«Per Arne Aasen — Mobil 934 06 780» sto det på bildøra. Førti år i 2025.</p>
+          <p class="ev__tenure"><b>40 års tjeneste</b> · hedret på jubileet 11.9.2026</p>
+        </div>
+      </div>
+    </article>
 
     <!-- ══ EPOKE 3 ═══════════════════════════════════════════════════ -->
     <section class="era era--3" id="epoke3">
@@ -656,6 +735,48 @@ body.lb-open{overflow:hidden}
           «Moss ligger midt i verden — også når det gjelder transport.»</p>
         <p class="ev__src">Moss Avis, 31.10.1986</p>
         {{CLIPS:utklipp-19861031-moss-avis-flying-start}}
+      </div>
+    </article>
+
+    <article class="ev ev--tenure" style="--dot:var(--palm)">
+      <div class="ev__year num">1986</div>
+      <div class="ev__body ev__body--tenure">
+        <span class="ev__portraits">
+          <button class="ev__portrait" data-img="hedersgjest-per-ivar-holmgren" data-group="hedersgjest" aria-label="Vis portrett: Per Ivar Holmgren"><img src="{{PORTRAIT:hedersgjest-per-ivar-holmgren}}" alt="Per Ivar Holmgren"></button>
+        </span>
+        <div>
+          <h3 class="ev__head">Per Ivar Holmgren begynner</h3>
+          <p>Samme år som terminalen åpnet og navnet ble Moss Transportforum — og han ble i førti.</p>
+          <p class="ev__tenure"><b>40 års tjeneste</b> · hedret på jubileet 11.9.2026</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="ev ev--tenure" style="--dot:var(--palm)">
+      <div class="ev__year num">1987</div>
+      <div class="ev__body ev__body--tenure">
+        <span class="ev__portraits">
+          <button class="ev__portrait" data-img="hedersgjest-roger-kaspersen" data-group="hedersgjest" aria-label="Vis portrett: Roger Kaspersen"><img src="{{PORTRAIT:hedersgjest-roger-kaspersen}}" alt="Roger Kaspersen"></button>
+        </span>
+        <div>
+          <h3 class="ev__head">Roger Kaspersen begynner</h3>
+          <p>Førti år i selskapet når han runder i 2027.</p>
+          <p class="ev__tenure"><b>40 års tjeneste</b> · hedret på jubileet 11.9.2026</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="ev ev--tenure" style="--dot:var(--palm)">
+      <div class="ev__year num">1988</div>
+      <div class="ev__body ev__body--tenure">
+        <span class="ev__portraits">
+          <button class="ev__portrait" data-img="hedersgjest-ivar-johansen" data-group="hedersgjest" aria-label="Vis portrett: Ivar Johansen"><img src="{{PORTRAIT:hedersgjest-ivar-johansen}}" alt="Ivar Johansen"></button>
+        </span>
+        <div>
+          <h3 class="ev__head">Ivar Johansen begynner</h3>
+          <p>Nok en som skulle bli i førti år — gjennom både oppgang og selskapets tyngste periode.</p>
+          <p class="ev__tenure"><b>40 års tjeneste</b> · hedret på jubileet 11.9.2026</p>
+        </div>
       </div>
     </article>
 
@@ -711,6 +832,20 @@ body.lb-open{overflow:hidden}
           av selskapets ledelse, var blitt distribuert i Moss. Brynildsen anmeldte saken til politiet.</p>
         <p class="ev__src">Moss Avis, 8.5.1992 · tekst Finn Saugestad</p>
         {{CLIPS:utklipp-19920508-moss-avis-disponenten-fjernet}}
+      </div>
+    </article>
+
+    <article class="ev ev--tenure" style="--dot:var(--palm)">
+      <div class="ev__year num">1992</div>
+      <div class="ev__body ev__body--tenure">
+        <span class="ev__portraits">
+          <button class="ev__portrait" data-img="hedersgjest-sverre-thu" data-group="hedersgjest" aria-label="Vis portrett: Sverre Thu"><img src="{{PORTRAIT:hedersgjest-sverre-thu}}" alt="Sverre Thu"></button>
+        </span>
+        <div>
+          <h3 class="ev__head">Sverre Thu begynner</h3>
+          <p>Kom inn i selskapets tyngste år — og ble værende i 35.</p>
+          <p class="ev__tenure"><b>35 års tjeneste</b> · hedret på jubileet 11.9.2026</p>
+        </div>
       </div>
     </article>
 
@@ -774,6 +909,21 @@ body.lb-open{overflow:hidden}
           Per Ivar Holmgren — alle fra Moss Transportforum.</p>
         <p class="ev__src">Moss Avis, 20.3.1997 · tekst Finn Saugestad, foto Jon-Ivar Fjeld</p>
         {{CLIPS:utklipp-19970320-moss-avis-fornoyd-med-basto-ferja}}
+      </div>
+    </article>
+
+    <article class="ev ev--tenure" style="--dot:var(--palm)">
+      <div class="ev__year num">1997</div>
+      <div class="ev__body ev__body--tenure">
+        <span class="ev__portraits">
+          <button class="ev__portrait" data-img="hedersgjest-bjorn-martin-haug" data-group="hedersgjest" aria-label="Vis portrett: Bjørn Martin Haug"><img src="{{PORTRAIT:hedersgjest-bjorn-martin-haug}}" alt="Bjørn Martin Haug"></button>
+          <button class="ev__portrait" data-img="hedersgjest-tom-larsen" data-group="hedersgjest" aria-label="Vis portrett: Tom Larsen"><img src="{{PORTRAIT:hedersgjest-tom-larsen}}" alt="Tom Larsen"></button>
+        </span>
+        <div>
+          <h3 class="ev__head">Bjørn Martin Haug og Tom Larsen begynner</h3>
+          <p>To som runder 30 år i 2027 — de yngste av hedersgjestene på jubileet.</p>
+          <p class="ev__tenure"><b>30 års tjeneste</b> · hedret på jubileet 11.9.2026</p>
+        </div>
       </div>
     </article>
 
@@ -847,9 +997,10 @@ body.lb-open{overflow:hidden}
 
   <p class="foot">
     Tidslinjen bygger på 30 avisutklipp hentet fra Nasjonalbiblioteket, gjennomgått august 2026.
-    Arkivet har to hull: ingenting mellom 1964 og 1979, og ingenting etter 2007.
+    De gullmerkede milepælene er MTFs langtjenende hedersgjester, hedret på 40-årsjubileet 11.9.2026 —
+    de fyller årene før 1997 der avisarkivet er tynt. Ett hull står igjen: 2007–2026.
     Faksimiler gjengitt etter avtale med Moss Avis / Amedia.
-    Bildekarusell og fotografier: Moss Transportforums arkiv v/ Ketil Haugland.
+    Bildekarusell, portretter og fotografier: Moss Transportforums arkiv v/ Ketil Haugland.
   </p>
 
 </div>

@@ -438,5 +438,117 @@
    "kbF": 183,
    "kbT": 21
   }
+ ],
+ "hedersgjest": [
+  {
+   "slug": "hedersgjest-audun-holmgren",
+   "w": 420,
+   "h": 420,
+   "kbF": 10,
+   "kbT": 2,
+   "navn": "Audun Holmgren",
+   "aar": 1977,
+   "tjeneste": 50
+  },
+  {
+   "slug": "hedersgjest-jan-tore-vold",
+   "w": 420,
+   "h": 420,
+   "kbF": 7,
+   "kbT": 2,
+   "navn": "Jan Tore Vold",
+   "aar": 1978,
+   "tjeneste": 50
+  },
+  {
+   "slug": "hedersgjest-bjorn-stromnes",
+   "w": 420,
+   "h": 420,
+   "kbF": 8,
+   "kbT": 1,
+   "navn": "Bjørn Strømnes",
+   "aar": 1982,
+   "tjeneste": 45
+  },
+  {
+   "slug": "hedersgjest-rune-ringsrod",
+   "w": 420,
+   "h": 420,
+   "kbF": 13,
+   "kbT": 3,
+   "navn": "Rune Ringsrød",
+   "aar": 1982,
+   "tjeneste": 45
+  },
+  {
+   "slug": "hedersgjest-per-arne-aasen",
+   "w": 420,
+   "h": 420,
+   "kbF": 8,
+   "kbT": 2,
+   "navn": "Per Arne Aasen",
+   "aar": 1985,
+   "tjeneste": 40
+  },
+  {
+   "slug": "hedersgjest-per-ivar-holmgren",
+   "w": 420,
+   "h": 420,
+   "kbF": 11,
+   "kbT": 3,
+   "navn": "Per Ivar Holmgren",
+   "aar": 1986,
+   "tjeneste": 40
+  },
+  {
+   "slug": "hedersgjest-roger-kaspersen",
+   "w": 420,
+   "h": 420,
+   "kbF": 8,
+   "kbT": 2,
+   "navn": "Roger Kaspersen",
+   "aar": 1987,
+   "tjeneste": 40
+  },
+  {
+   "slug": "hedersgjest-ivar-johansen",
+   "w": 420,
+   "h": 420,
+   "kbF": 11,
+   "kbT": 2,
+   "navn": "Ivar Johansen",
+   "aar": 1988,
+   "tjeneste": 40
+  },
+  {
+   "slug": "hedersgjest-sverre-thu",
+   "w": 420,
+   "h": 420,
+   "kbF": 10,
+   "kbT": 2,
+   "navn": "Sverre Thu",
+   "aar": 1992,
+   "tjeneste": 35
+  },
+  {
+   "slug": "hedersgjest-bjorn-martin-haug",
+   "w": 420,
+   "h": 420,
+   "kbF": 9,
+   "kbT": 2,
+   "navn": "Bjørn Martin Haug",
+   "aar": 1997,
+   "tjeneste": 30
+  },
+  {
+   "slug": "hedersgjest-tom-larsen",
+   "w": 420,
+   "h": 420,
+   "kbF": 9,
+   "kbT": 2,
+   "navn": "Tom Larsen",
+   "aar": 1997,
+   "tjeneste": 30
+  }
  ]
 }
