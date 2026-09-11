@@ -139,11 +139,15 @@ def portrait_repl(m):
 html = re.sub(r"\{\{PORTRAIT:([^}]+)\}\}", portrait_repl, html)
 
 # ── {{POSTER}} — plakatbilde til bildekarusell-lenken ───────────────────────
-poster = HERE / "karusell-poster.jpg"
 if "{{POSTER}}" in html:
-    if not poster.exists():
-        raise SystemExit(f"Mangler plakatbilde: {poster}")
-    html = html.replace("{{POSTER}}", datauri(poster, "image/jpeg"))
+    poster_webp = HERE / "karusell-poster.webp"
+    poster_jpg = HERE / "karusell-poster.jpg"
+    if poster_webp.exists():
+        html = html.replace("{{POSTER}}", datauri(poster_webp, "image/webp"))
+    elif poster_jpg.exists():
+        html = html.replace("{{POSTER}}", datauri(poster_jpg, "image/jpeg"))
+    else:
+        raise SystemExit("Mangler plakatbilde (karusell-poster.webp/.jpg)")
 
 html = html.replace("{{META_JSON}}", json.dumps(meta, ensure_ascii=False))
 html = html.replace("{{FULL_JSON}}", json.dumps(full))
